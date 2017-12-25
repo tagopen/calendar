@@ -1,12 +1,12 @@
 <template>
   <div class="events-wrapper" :style="bgColor">
 
-        <div style="position: relative" v-if="dayEvents.events.length > 0">
-          <img @click="preMonth(dayEvents.date)" src="https://s31.postimg.org/4fqn98kff/left.png" alt="Left" class="ra-img-left">
-          <img @click="nextMonth(dayEvents.date)" src="https://s31.postimg.org/z9xw6z5hn/right.png" alt="Right" class="ra-img-right">
+        <div style="position: relative" v-if="dayEvents.events.length !== 0">
+          <img @click="preMonth2(dayEvents.date)" src="https://s31.postimg.org/4fqn98kff/left.png" alt="Left3" class="ra-img-left">
+          <img @click="nextMonth2(dayEvents.date)" src="https://s31.postimg.org/z9xw6z5hn/right.png" alt="Right3" class="ra-img-right">
         </div>
 
-        <div style="position: relative" v-if="dayEvents.events.length == 0">
+        <div style="position: relative" v-else>
           <img @click="preMonth('17')" src="https://s31.postimg.org/4fqn98kff/left.png" alt="Left2" class="ra-img-left">
           <img @click="nextMonth('17')" src="https://s31.postimg.org/z9xw6z5hn/right.png" alt="Right2" class="ra-img-right">
         </div>
@@ -89,7 +89,6 @@ export default {
     nextMonth (t) {
       /*this.$EventCalendar.nextMonth()
       this.$emit('month-changed', this.curYearMonth)*/
-      if (t == '17') {
         var today1 = new Date();
         var today2 = `${today1.getFullYear()}/${today1.getMonth()+1}/${today1.getDate()}`;
         var today3day = `${today1.getDate()}`;
@@ -97,7 +96,8 @@ export default {
 
         for (var i = 0; i < this.eve.length; i++) {
           if (this.eve[i].date.split('/')[2] > today3day && this.eve[i].date.split('/')[1] == today4mon) {
-              this.$emit('cur-day-changed', this.eve[i].date);
+              var cga = i+1;
+              this.$emit('cur-day-changed', this.eve[cga].date);
               break;
           }
           if (this.eve[i].date.split('/')[1] != today4mon) {
@@ -107,24 +107,23 @@ export default {
               break;
           }
         }
-      } else {
+    },
+    nextMonth2 (t) {
         for (var i = 0; i < this.eve.length; i++) {
           if (t == this.eve[i].date) {
             var tr = i + 1;
             this.$emit('cur-day-changed', this.eve[tr].date);
             if (this.eve[i].date.split('/')[1] != this.eve[tr].date.split('/')[1]) {
               this.$EventCalendar.nextMonth()
-              this.$emit('month-changed', this.eve[i].date.split('/')[1])
+              this.$emit('month-changed', this.eve[tr].date.split('/')[1])
             }
             break;
           }
         }
-      }
     },
     preMonth (t) {
       /*this.$EventCalendar.preMonth()
-      this.$emit('month-changed', this.curYearMonth)*/
-      if (t == '17') {
+      this.$emit('month-changed', this.curYearMonth)*/ 
         var today1 = new Date();
         var today2 = `${today1.getFullYear()}/${today1.getMonth()+1}/${today1.getDate()}`;
         var today3day = `${today1.getDate()}`;
@@ -142,20 +141,20 @@ export default {
               break;
           }
         }
-      } else {
+    },
+    preMonth2 (t) {
         for (var i = 0; i < this.eve.length; i++) {
           if (t == this.eve[i].date) {
             var tr = i - 1;
             this.$emit('cur-day-changed', this.eve[tr].date);
             if (this.eve[i].date.split('/')[1] != this.eve[tr].date.split('/')[1]) {
               this.$EventCalendar.preMonth()
-              this.$emit('month-changed', this.eve[i].date.split('/')[1])
+              this.$emit('month-changed', this.eve[tr].date.split('/')[1])
             }
             break;
           }
         }
-      }
-    },
+    }
   }
 }
 </script>

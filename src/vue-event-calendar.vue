@@ -96,7 +96,8 @@ export default {
     }
   },
   created () {
-      this.handleChangeCurDay(`${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`)
+      this.handleChangeCurDay(`${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`);
+      window.curdate = `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`;
   },
   methods: {
     handleChangeCurDay (date) {
@@ -113,6 +114,7 @@ export default {
         date: date,
         events: events.slice(0, 1)
       })
+      window.curdate = date;
     },
     handleMonthChanged (yearMonth) {
       this.$emit('month-changed', yearMonth)
