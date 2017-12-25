@@ -97,22 +97,20 @@ export default {
 
         for (var i = 0; i < this.eve.length; i++) {
           if (this.eve[i].date.split('/')[2] > today3day && this.eve[i].date.split('/')[1] == today4mon) {
-              var te = i + 1;
-              this.$emit('cur-day-changed', this.eve[te].date);
+              this.$emit('cur-day-changed', this.eve[i].date);
               break;
           }
           if (this.eve[i].date.split('/')[1] != today4mon) {
-              var te = i + 1;
-              this.$emit('cur-day-changed', this.eve[te].date);
+              this.$emit('cur-day-changed', this.eve[i].date);
               this.$EventCalendar.nextMonth()
-              this.$emit('month-changed', this.eve[te].date.split('/')[1])
+              this.$emit('month-changed', this.eve[i].date.split('/')[1]-1)
               break;
           }
         }
       } else {
         for (var i = 0; i < this.eve.length; i++) {
           if (t == this.eve[i].date) {
-            var tr = i+1;
+            var tr = i + 1;
             this.$emit('cur-day-changed', this.eve[tr].date);
             if (this.eve[i].date.split('/')[1] != this.eve[tr].date.split('/')[1]) {
               this.$EventCalendar.nextMonth()
@@ -134,22 +132,22 @@ export default {
 
         for (var i = 0; i < this.eve.length; i++) {
           if (this.eve[i].date.split('/')[2] < today3day && this.eve[i].date.split('/')[1] == today4mon) {
-              var te = i;
+              var te = i - 1;
               this.$emit('cur-day-changed', this.eve[te].date);
               break;
           }
           if (this.eve[i].date.split('/')[1] != today4mon) {
-              var te = i;
+              var te = i - 1;
               this.$emit('cur-day-changed', this.eve[te].date);
               this.$EventCalendar.preMonth()
-              this.$emit('month-changed', this.eve[te].date.split('/')[1])
+              this.$emit('month-changed', this.eve[te].date.split('/')[1]-1)
               break;
           }
         }
       } else {
         for (var i = 0; i < this.eve.length; i++) {
           if (t == this.eve[i].date) {
-            var tr = i-1;
+            var tr = i - 1;
             this.$emit('cur-day-changed', this.eve[tr].date);
             if (this.eve[i].date.split('/')[1] != this.eve[tr].date.split('/')[1]) {
               this.$EventCalendar.preMonth()
