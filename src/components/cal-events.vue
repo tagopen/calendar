@@ -101,7 +101,7 @@ export default {
               this.$emit('cur-day-changed', this.eve[te].date);
               break;
           }
-          if (this.eve[i].date.split('/')[2] < today3day && this.eve[i].date.split('/')[1] != today4mon) {
+          if (this.eve[i].date.split('/')[1] != today4mon) {
               var te = i + 1;
               this.$emit('cur-day-changed', this.eve[te].date);
               this.$EventCalendar.nextMonth()
@@ -138,7 +138,7 @@ export default {
               this.$emit('cur-day-changed', this.eve[te].date);
               break;
           }
-          if (this.eve[i].date.split('/')[2] > today3day && this.eve[i].date.split('/')[1] != today4mon) {
+          if (this.eve[i].date.split('/')[1] != today4mon) {
               var te = i;
               this.$emit('cur-day-changed', this.eve[te].date);
               this.$EventCalendar.preMonth()
