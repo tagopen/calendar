@@ -23,9 +23,34 @@ function install (Vue, options = {}) {
           curYear: dateObj.getFullYear(),
           curMonth: dateObj.getMonth(),
           curDate: dateObj.getDate(),
-          curEventsDate: 'all'
+          curEventsDate: dateObj.getDate()
         }
       } else {
+        let dateArr = dateString.split('/');
+        dateArr = dateArr.map((item) => {
+          return parseInt(item, 10)
+        })
+        this.$vm.CALENDAR_EVENTS_DATA.params = {
+          curYear: dateArr[0],
+          curMonth: dateArr[1]-1,
+          curDate: dateArr[2],
+          curEventsDate: dateArr[2]
+        }
+      }
+    },
+    toDate2 (dateString) {
+        let dateArr = dateString.split('/');
+        dateArr = dateArr.map((item) => {
+          return parseInt(item, 10)
+        })
+        this.$vm.CALENDAR_EVENTS_DATA.params = {
+          curYear: dateArr[0],
+          curMonth: dateArr[1]-1,
+          curDate: dateArr[2],
+          curEventsDate: dateArr[2]
+        }
+    },
+    nextDay (dateString) {
         let dateArr = dateString.split('/')
         dateArr = dateArr.map((item) => {
           return parseInt(item, 10)
@@ -34,9 +59,20 @@ function install (Vue, options = {}) {
           curYear: dateArr[0],
           curMonth: dateArr[1]-1,
           curDate: dateArr[2],
-          curEventsDate: dateString
+          curEventsDate: dateArr[2]
         }
-      }
+    },
+    preDay (dateString) {
+        let dateArr = dateString.split('/')
+        dateArr = dateArr.map((item) => {
+          return parseInt(item, 10)
+        })
+        this.$vm.CALENDAR_EVENTS_DATA.params = {
+          curYear: dateArr[0],
+          curMonth: dateArr[1]-1,
+          curDate: dateArr[2],
+          curEventsDate: dateArr[2]
+        }
     },
     nextMonth () {
       if (this.$vm.CALENDAR_EVENTS_DATA.params.curMonth < 11) {
@@ -66,7 +102,7 @@ function install (Vue, options = {}) {
           curYear: dateObj.getFullYear(),
           curMonth: dateObj.getMonth(),
           curDate: dateObj.getDate(),
-          curEventsDate: 'all'
+          curEventsDate: dateObj.getDate()
         }
       }
     }

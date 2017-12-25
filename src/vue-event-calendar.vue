@@ -11,16 +11,22 @@
       :title="title"
       :dayEvents="selectedDayEvents"
       :locale="calendarOptions.options.locale"
-      :color="calendarOptions.options.color">
+      :color="calendarOptions.options.color"
+      @cur-day-changed="handleChangeCurDay"
+      @month-changed="handleMonthChanged">
       <slot :showEvents="selectedDayEvents.events"></slot>
     </cal-events>
   </div>
 </template>
+
 <script>
 import { isEqualDateStr} from './tools.js'
 
+
 import calEvents from './components/cal-events.vue'
 import calPanel from './components/cal-panel.vue'
+
+var dateOb = new Date()
 
 const inBrowser = typeof window !== 'undefined'
 export default {
@@ -32,8 +38,8 @@ export default {
   data () {
     return {
       selectedDayEvents: {
-        date: 'all',
-        events: this.events || []  //default show all event
+        date: `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`,
+        events: []
       }
     }
   },
@@ -63,14 +69,14 @@ export default {
       } else {
         return {
           options: {
-            locale: 'en', //zh
-            color: ' #f29543'
+            locale: 'ru', //zh
+            color: '#ffb24a'
           },
           params: {
               curYear: dateObj.getFullYear(),
               curMonth: dateObj.getMonth(),
               curDate: dateObj.getDate(),
-              curEventsDate: 'all'
+              curEventsDate: `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`
           }
         }
       }
@@ -84,15 +90,13 @@ export default {
           curYear: dateObj.getFullYear(),
           curMonth: dateObj.getMonth(),
           curDate: dateObj.getDate(),
-          curEventsDate: 'all'
+          curEventsDate: `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`
         }
       }
     }
   },
   created () {
-    if (this.calendarParams.curEventsDate !== 'all') {
-      this.handleChangeCurDay(this.calendarParams.curEventsDate)
-    }
+      this.handleChangeCurDay(`${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`)
   },
   methods: {
     handleChangeCurDay (date) {
@@ -102,12 +106,12 @@ export default {
       if (events.length > 0) {
         this.selectedDayEvents = {
           date: date,
-          events: events
+          events: events.slice(0, 1)
         }
       }
       this.$emit('day-changed', {
         date: date,
-        events: events
+        events: events.slice(0, 1)
       })
     },
     handleMonthChanged (yearMonth) {
@@ -118,30 +122,33 @@ export default {
     calendarParams () {
       if (this.calendarParams.curEventsDate !== 'all') {
         let events = this.events.filter(event => {
-          return isEqualDateStr(event.date, this.calendarParams.curEventsDate)
+          return isEqualDateStr(event.date, `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`)
         })
         this.selectedDayEvents = {
-          date: this.calendarParams.curEventsDate,
+          date: `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`,
           events
         }
       } else {
         this.selectedDayEvents = {
-          date: 'all',
-          events: this.events
+          date: `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`,
+          events: this.events.slice(0, 1)
         }
       }
     },
     events () {
+      var eve333 = this.events.filter(function(event) {
+        return isEqualDateStr(event.date, `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`)
+      })
       this.selectedDayEvents = {
-        date: 'all',
-        events: this.events || []
+        date: `${dateOb.getFullYear()}/${dateOb.getMonth()+1}/${dateOb.getDate()}`,
+        events: eve333.slice(0, 1)
       }
     }
   }
 }
 </script>
 <style lang="less">
-@base-orange: #f29543;
+@base-orange: rgb(255, 178, 74);
 @white: #ffffff;
 @gray: #e0e0e0;
 @gray-dark: #b1b1b1;
@@ -149,19 +156,25 @@ export default {
 @small-padding: 10px;
 
 @icon-border-size: 1px;
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 895px) {
   .__vev_calendar-wrapper{
     max-width: 1200px;
     margin: 0 auto;
     .cal-wrapper{
       width: 50%;
-      padding: 100px 50px;
+      margin-top:50px;
+      margin-bottom:50px;
+      padding-top: 30px;
+      padding-bottom: 30px;
+      padding-left: 50px;
+      padding-right: 50px;
+      background-color: #f8f8f8;
       .date-num{
         line-height: 50px;
       }
     }
     .events-wrapper{
-      width: 50%;
+      width: 47%;
       background-color: @base-orange;
       color: @white;
       padding: 40px 45px;
@@ -172,7 +185,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 895px) {
   .__vev_calendar-wrapper{
     .cal-wrapper{
       width: 100%;
@@ -189,6 +202,7 @@ export default {
   }
 }
 .__vev_calendar-wrapper{
+  font-family: 'PlayfairDisplay';
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -211,7 +225,7 @@ export default {
     .cal-header{
       position: relative;
       width: 100%;
-      background-color: @white;
+      background-color: #f8f8f8;
       // box-shadow: 0 6px 5px rgba(0,0,0,.1);
       font-weight: 500;
       overflow: hidden;
@@ -227,14 +241,14 @@ export default {
       }
       .l{
         text-align: left;
-        width: 20%;
+        width: 40%;
         cursor: pointer;
         user-select: none;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       }
       .r{
         text-align: right;
-        width: 20%;
+        width: 40%;
         cursor: pointer;
         user-select: none;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -246,7 +260,8 @@ export default {
         width: 100%;
         overflow: hidden;
         text-align: center;
-        font-size: 1rem;
+        font-size: 1.2rem;
+        color: #4b8078;
         .item{
           line-height: 50px;
           float: left;
@@ -258,6 +273,7 @@ export default {
         overflow: hidden;
         text-align: center;
         font-size: 1rem;
+        color: #4b8078;
         .item{
           position: relative;
           float: left;
@@ -266,11 +282,12 @@ export default {
           cursor: default;
           -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
           .date-num{
-            font-size: 1rem;
+            font-size: 1.2rem;
             position: relative;
             z-index: 3;
           }
           &.event{
+            color: white;
             cursor: pointer;
           }
           &.selected-day{
@@ -280,8 +297,8 @@ export default {
           }
           .is-event{
             content: '';
-            border: 1px solid @base-orange;
-            background-color: #fff;
+            background-color: @base-orange;
+            color: white;
             border-radius: 50%;
             width: 36px;
             height: 36px;
@@ -290,21 +307,10 @@ export default {
             top: 50%;
             z-index: 1;
             margin-left: -18px;
-            margin-top: -19px;
+            margin-top: -16px;
           }
           .is-today{
-            content: '';
-            background-color: @base-orange;
-            border-radius: 50%;
-            opacity: .8;
             width: 12px;
-            height: 4px;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            z-index: 2;
-            margin-left: -6px;
-            margin-top: 8px;
           }
         }
       }
@@ -313,7 +319,7 @@ export default {
   .events-wrapper{
     border-radius: 10px;
     .cal-events{
-      height: 95%;
+      height: 100%;
       overflow-y: auto;
       padding: 0 5px;
       margin: 15px 0;

@@ -1,9 +1,9 @@
 <template>
   <div class="cal-wrapper">
     <div class="cal-header">
-      <div class="l" @click="preMonth"><div class="arrow-left icon">&nbsp</div></div>
-      <div class="title">{{curYearMonth}}</div>
-      <div class="r" @click="nextMonth"><div class="arrow-right icon">&nbsp</div></div>
+      <div class="l"></div>
+      <div class="t-center2">{{curMonth}}</div>
+      <div class="r"></div>
     </div>
     <div class="cal-body">
       <div class="weeks">
@@ -26,11 +26,11 @@
           >
           <p class="date-num"
             @click="handleChangeCurday(date)"
-            :style="{color: date.title != undefined ? ((date.date == selectedDay) ? '#fff' : customColor) : 'inherit'}">
+            :style="{color: date.title != undefined ? ((date.date == selectedDay) ? '#fff' : '#fff') : 'inherit'}">
             {{date.status ? date.date.split('/')[2] : '&nbsp'}}</p>
-          <span v-if="date.status ? (today == date.date) : false" class="is-today" :style="{backgroundColor: customColor }" ></span>
+          <span v-if="date.status ? (today == date.date) : false" class="is-today"></span>
           <span v-if="date.status ? (date.title != undefined) : false" class="is-event"
-            :style="{borderColor: customColor, backgroundColor: (date.date == selectedDay) ? customColor : 'inherit'}"></span>
+            :style="{borderColor: customColor, backgroundColor: (date.date == selectedDay) ? customColor : customColor}" style="color: white;"></span>
         </div>
       </div>
     </div>
@@ -110,6 +110,9 @@ export default {
     curYearMonth () {
       let tempDate = Date.parse(new Date(`${this.calendar.params.curYear}/${this.calendar.params.curMonth+1}/01`))
       return dateTimeFormatter(tempDate, this.i18n[this.calendar.options.locale].format)
+    },
+    curMonth () {
+      return this.i18n[this.calendar.options.locale].monthNames[`${this.calendar.params.curMonth}`]
     },
     customColor () {
       return this.calendar.options.color
