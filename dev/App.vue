@@ -30,7 +30,7 @@
           </div>
         </div>
         <div v-if="props.showEvents.length < 1">
-          <div v-for="(event, index) in eve" class="ra-block ra-block2" v-if="event.img != '' && event.date.split('/')[2] != todayday" v-bind:style="{ 'background-image': 'url(' + event.img + ')' }">
+          <div v-for="(event, index) in eve" class="ra-block ra-block2" v-if="event.img != '' && event.date.split('/')[2] > todayday || event.date.split('/')[1] != todaymon && event.img != ''" v-bind:style="{ 'background-image': 'url(' + event.img + ')' }">
               <span style="font-size:95px; font-weight:100; font-family: 'PlayfairDisplay';">{{event.day}}</span>
               <br>
               <span style="font-style: italic; font-family: 'PlayfairDisplay'; font-size: 18px;">{{event.mon}}</span>
@@ -41,7 +41,7 @@
               <p style="font-family: 'PF Beau Sans Pro'; font-weight: 400; font-size: 18px;">{{event.title}}</p>
           </div>
 
-          <div v-for="(event, index) in eve" class="ra-block ra-block2" v-if="event.img == '' && event.date.split('/')[2] != todayday" v-bind:style="{ 'background-image': 'url(https://s31.postimg.org/4n9orm8gr/background.png)' }">
+          <div v-for="(event, index) in eve" class="ra-block ra-block2" v-if="event.img == '' && event.date.split('/')[2] > todayday || event.date.split('/')[1] != todaymon && event.img == ''" v-bind:style="{ 'background-image': 'url(https://s31.postimg.org/4n9orm8gr/background.png)' }">
               <span style="font-size:95px; font-weight:100; font-family: 'PlayfairDisplay';">{{event.day}}</span>
               <br>
               <span style="font-style: italic; font-family: 'PlayfairDisplay'; font-size: 18px;">{{event.mon}}</span>
