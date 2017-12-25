@@ -132,15 +132,13 @@ export default {
 
         for (var i = 0; i < this.eve.length; i++) {
           if (this.eve[i].date.split('/')[2] < today3day && this.eve[i].date.split('/')[1] == today4mon) {
-              var te = i - 1;
-              this.$emit('cur-day-changed', this.eve[te].date);
+              this.$emit('cur-day-changed', this.eve[i].date);
               break;
           }
           if (this.eve[i].date.split('/')[1] != today4mon) {
-              var te = i - 1;
-              this.$emit('cur-day-changed', this.eve[te].date);
+              this.$emit('cur-day-changed', this.eve[i].date);
               this.$EventCalendar.preMonth()
-              this.$emit('month-changed', this.eve[te].date.split('/')[1]-1)
+              this.$emit('month-changed', this.eve[i].date.split('/')[1]-1)
               break;
           }
         }
